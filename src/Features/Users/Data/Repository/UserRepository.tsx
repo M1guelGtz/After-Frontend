@@ -16,4 +16,8 @@ export class UserRepository {
         const autenticated_user: LoginResponseDTO = await response.json();
         return autenticated_user;
     }
+
+    // en caso de ocuparse mas metodos aqui se dejan
+    // en el ejemplo de requerir un registro o una alta de usuarios, 
+    // se coloca aqui la logica y se ejecuta en un caso de uso aislado
 }
