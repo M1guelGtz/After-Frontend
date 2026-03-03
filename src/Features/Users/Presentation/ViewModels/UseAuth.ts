@@ -23,7 +23,8 @@ export function useAuth () {
             }
             console.log(response)
             value?.setUser(response)
-            value?.user?.rol_id === 1 ? navigate("/dashboard"):navigate("/rp") 
+            const user_rol = response.rol_id
+            user_rol === 1 ? navigate("/dashboard"):navigate("/rp") 
         } catch {
 
         }
