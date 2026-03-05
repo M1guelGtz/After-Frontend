@@ -18,7 +18,7 @@ function Login() {
                 className='rounded px-6 w-full max-w-sm'
                 >
                     <div>
-                        <Input value={username} setValue={setUsername} label="Email" />
+                        <Input value={username} setValue={setUsername} label="Username" />
                     </div>
                     <div>
                         <Input value={password} setValue={setPassword} label="Password" type="password" />
