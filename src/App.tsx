@@ -10,9 +10,19 @@ function App() {
   return (
     <>
     <UserContext.Provider value={{user, setUser}}>
-      <RouterPublic></RouterPublic>
-      <RouterAdmin></RouterAdmin>
-      <RouterRP></RouterRP>
+      {
+        !user &&
+          <RouterPublic />
+      }
+      {
+        user?.rol_id === 1 && 
+          <RouterAdmin />
+
+      }
+      {
+        user?.rol_id === 2 &&
+          <RouterRP></RouterRP>
+      }
     </UserContext.Provider>
     </>
   )
