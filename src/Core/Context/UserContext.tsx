@@ -10,5 +10,4 @@ const UserContext = createContext<IUserContext>({
   user: null,
   setUser: () => {}
 });
-
 export default UserContext;
