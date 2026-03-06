@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import Login from "../../Features/Users/Presentation/Pages/Login";
 import Admin from "../../Features/Users/Presentation/Pages/Admin";
 
+
 export default function RouterPublic () {
     return(
         <Routes>
@@ -10,6 +11,7 @@ export default function RouterPublic () {
 
             {/* ruta para el admin */}
             <Route path="/admin" element={<Admin />} />
+
 
         </Routes>
     )
