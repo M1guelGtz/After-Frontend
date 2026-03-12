@@ -6,28 +6,30 @@ import { loginUseCase } from "../../Domain/LoginUseCase";
 
 export function useAuth () {
     const [user, setUser] = useState<LoginResponseDTO | null>(null);
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
+    const [username, setUsername] = useState("")
+    const [password, setPassword] = useState("")
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const value = useContext(UserContext);
-    const navigate = useNavigate();
+    const navigate = useNavigate()
     const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        //setError("")
-        //setLoading(true)
+        e.preventDefault()
+        setError("")
+        setLoading(true)
         try {
             const response = await loginUseCase.loginUseCase(username, password)
             if (!response.success) {
                 throw new Error('Credenciales inválidas');
-                setError("Credenciales inválidas")
             }
-            //console.log(response)
+            console.log(response)
+            setUser(response)
             value?.setUser(response)
             const user_rol = response.rol_id
-            user_rol === 1 ? navigate("/dashboard") : navigate("/rp") 
-        } catch {
-            setError("Credenciales inválidas")
+            user_rol === 1 ? navigate("/dashboard"):navigate("/rp") 
+        } catch (err) {
+            setError(err instanceof Error ? err.message : 'Error al iniciar sesión. Verifica tus credenciales.');
+        } finally {
+            setLoading(false)
         }
     }
     return {
