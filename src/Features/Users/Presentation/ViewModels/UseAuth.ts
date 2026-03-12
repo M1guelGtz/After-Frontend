@@ -14,19 +14,26 @@ export function useAuth () {
     const navigate = useNavigate()
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        //setError("")
-        //setLoading(true)
+        setError("")
+        setLoading(true)
         try {
             const response = await loginUseCase.loginUseCase(username, password)
             if (!response.success) {
                 throw new Error('Credenciales inválidas');
             }
             console.log(response)
-            value?.setUser(response)
+            setUser(response)
+            const providerData = {
+                user: response,
+                setUser: (user: LoginResponseDTO | null) => setUser(user)
+            }
+            value?.setUser(providerData)
             const user_rol = response.rol_id
             user_rol === 1 ? navigate("/dashboard"):navigate("/rp") 
-        } catch {
-
+        } catch (err) {
+            setError(err instanceof Error ? err.message : 'Error al iniciar sesión. Verifica tus credenciales.');
+        } finally {
+            setLoading(false)
         }
     }
     return {

@@ -154,7 +154,73 @@
   box-shadow: 0 5px 15px rgba(0,0,0,0.4);
 }
 
-.login-btn:hover {
+.login-btn:hover:not(:disabled) {
   transform: scale(1.05);
   box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+}
+
+.login-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: scale(1);
+}
+
+/* ===== LOADING ===== */
+.loading-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #ECF0F1;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ===== ALERTAS ===== */
+.alert {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  font-size: 13px;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.alert-error {
+  background: rgba(231, 76, 60, 0.15);
+  border: 1px solid rgba(231, 76, 60, 0.4);
+  color: #FF6B6B;
+}
+
+.alert svg {
+  flex-shrink: 0;
+}
+
+/* ===== INPUTS DISABLED ===== */
+.input-group input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }

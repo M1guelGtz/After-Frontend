@@ -1,23 +1,10 @@
 
-import React, { useState } from "react";
-import "./Login.css";
-import { useNavigate } from "react-router-dom";
 import fondo from "../../../../assets/after.jpg";
+import { useAuth } from "../ViewModels/UseAuth";
+import "./Login.css";
 
 export default function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const navigate = useNavigate();
-
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (email === "admin@gmail.com" && password === "1234") {
-      navigate("/admin");
-    } else {
-      alert("Credenciales incorrectas");
-    }
-  };
+  const { handleSubmit, username, password, setPassword, setUsername, loading, error } = useAuth()
 
   return (
     <div
@@ -31,13 +18,25 @@ export default function Login() {
         <h1 className="login-title">AFTER</h1>
         <p className="login-subtitle">by Experiencias Ámbar</p>
 
-        <form onSubmit={handleLogin}>
+        {error && (
+          <div className="alert alert-error">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            <span>{error}</span>
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit}>
           <div className="input-group">
             <input
-              type="email"
+              type="text"
               required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              disabled={loading}
             />
             <label>Usuario</label>
           </div>
@@ -48,12 +47,20 @@ export default function Login() {
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              disabled={loading}
             />
             <label>Contraseña</label>
           </div>
 
-          <button type="submit" className="login-btn">
-            Iniciar Sesión
+          <button type="submit" className="login-btn" disabled={loading}>
+            {loading ? (
+              <div className="loading-container">
+                <div className="spinner"></div>
+                <span>Iniciando sesión...</span>
+              </div>
+            ) : (
+              'Iniciar Sesión'
+            )}
           </button>
         </form>
       </div>
