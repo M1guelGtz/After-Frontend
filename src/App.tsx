@@ -1,15 +1,32 @@
 import './App.css'
+import { useState } from 'react'
+import { clearStoredUser, getStoredUser, persistUser } from './Core/Session/sessionStorage'
 import UserContext from './Core/Context/UserContext'
-import { useAuth } from './Features/Users/Presentation/ViewModels/UseAuth'
 import RouterAdmin from './Routes/Router/router.admin'
+import RouterManager from './Routes/Router/router.manager'
 import RouterPublic from './Routes/Router/router.public'
 import RouterRP from './Routes/Router/router.rp'
-function App() {
+import type { LoginResponseDTO } from './Features/Users/Data/Models/LoginResponseDTO'
 
-  const { user, setUser } = useAuth()
+function App() {
+  const [user, setUserState] = useState<LoginResponseDTO | null>(() => getStoredUser())
+
+  const setUser = (nextUser: LoginResponseDTO | null) => {
+    setUserState(nextUser)
+
+    if (nextUser) {
+      persistUser(nextUser)
+      return
+    }
+
+    clearStoredUser()
+  }
+
+  const logout = () => setUser(null)
+
   return (
     <>
-    <UserContext.Provider value={{user, setUser}}>
+    <UserContext.Provider value={{user, setUser, logout}}>
       {
         !user &&
           <RouterPublic />
@@ -22,6 +39,10 @@ function App() {
       {
         user?.rol_id === 2 &&
           <RouterRP></RouterRP>
+      }
+      {
+        user?.rol_id === 3 &&
+          <RouterManager />
       }
     </UserContext.Provider>
     </>

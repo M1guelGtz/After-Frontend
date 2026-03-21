@@ -4,4 +4,5 @@ export interface user {
     username: string
     password: string
     rol_id: number
+    comision_porcentaje?: number
 }

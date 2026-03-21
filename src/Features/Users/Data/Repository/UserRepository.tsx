@@ -1,20 +1,30 @@
 import type { LoginResponseDTO } from "../Models/LoginResponseDTO"
+import { apiRequest } from "../../../../Core/Api/apiClient";
+import type { RegisterUserDTO } from "../Models/RegisterUserDTO";
+import type { RegisterUserResponseDTO, UsersListResponseDTO } from "../Models/UserResponseDTO";
 
-const url = import.meta.env.VITE_API_URL
 export class UserRepository {
     async login (username: string, password: string): Promise<LoginResponseDTO>{
-        const response = await fetch (`${url}users/auth/login`, {
+        return apiRequest<LoginResponseDTO>("users/auth/login", {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ username, password }),
+            body: { username, password },
+            auth: false,
         });
-        if (!response.ok) {
-            throw new Error('Credenciales inválidas');
-        }
-        const autenticated_user: LoginResponseDTO = await response.json();
-        return autenticated_user;
+    }
+
+    getUsers(): Promise<UsersListResponseDTO> {
+        return apiRequest<UsersListResponseDTO>("users");
+    }
+
+    getUsersByRole(roleId: number): Promise<UsersListResponseDTO> {
+        return apiRequest<UsersListResponseDTO>(`users/role/${roleId}`);
+    }
+
+    createUser(payload: RegisterUserDTO): Promise<RegisterUserResponseDTO> {
+        return apiRequest<RegisterUserResponseDTO>("users", {
+            method: "POST",
+            body: payload,
+        });
     }
 
     // en caso de ocuparse mas metodos aqui se dejan

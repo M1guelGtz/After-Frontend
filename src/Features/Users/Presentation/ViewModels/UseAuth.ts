@@ -1,11 +1,9 @@
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import UserContext from "../../../../Core/Context/UserContext";
-import type { LoginResponseDTO } from "../../Data/Models/LoginResponseDTO";
 import { loginUseCase } from "../../Domain/LoginUseCase";
 
 export function useAuth () {
-    const [user, setUser] = useState<LoginResponseDTO | null>(null);
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [loading, setLoading] = useState(false);
@@ -21,11 +19,17 @@ export function useAuth () {
             if (!response.success) {
                 throw new Error('Credenciales inválidas');
             }
-            console.log(response)
-            setUser(response)
             value?.setUser(response)
             const user_rol = response.rol_id
-            user_rol === 1 ? navigate("/dashboard"):navigate("/rp") 
+            if (user_rol === 1) {
+                navigate("/dashboard")
+            } else if (user_rol === 2) {
+                navigate("/rp")
+            } else if (user_rol === 3) {
+                navigate("/manager")
+            } else {
+                throw new Error("Este usuario no tiene un rol habilitado en la plataforma.")
+            }
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Error al iniciar sesión. Verifica tus credenciales.');
         } finally {
@@ -33,8 +37,7 @@ export function useAuth () {
         }
     }
     return {
-        user,
-        setUser,
+        user: value?.user ?? null,
         handleSubmit,
         error, 
         loading, 
