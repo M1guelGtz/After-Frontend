@@ -26,7 +26,6 @@ export default function EventsPanel({
   selectedEventId,
   setSelectedEventId,
   loading,
-  saving,
   error,
   readOnly = false,
   onCreateClick,
