@@ -16,9 +16,18 @@ export function useAuth () {
         setLoading(true)
         try {
             const response = await loginUseCase.loginUseCase(username, password)
-            if (!response.success) {
+            if (!response || typeof response !== "object") {
+                throw new Error("Respuesta inválida del servidor de autenticación.")
+            }
+
+            const hasToken = typeof response.token === "string" && response.token.length > 0
+            const hasRole = Number.isFinite(response.rol_id)
+            const isSuccessful = response.success === true || (hasToken && hasRole)
+
+            if (!isSuccessful) {
                 throw new Error('Credenciales inválidas');
             }
+
             value?.setUser(response)
             const user_rol = response.rol_id
             if (user_rol === 1) {

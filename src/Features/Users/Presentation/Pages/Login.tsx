@@ -28,27 +28,33 @@ export default function Login() {
           </div>
         )}
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} autoComplete="on">
           <div className="input-group">
             <input
+              id="login-username"
+              name="username"
               type="text"
               required
+              autoComplete="username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               disabled={loading}
             />
-            <label>Usuario</label>
+            <label htmlFor="login-username">Usuario</label>
           </div>
 
           <div className="input-group">
             <input
+              id="login-password"
+              name="password"
               type="password"
               required
+              autoComplete="current-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               disabled={loading}
             />
-            <label>Contraseña</label>
+            <label htmlFor="login-password">Contraseña</label>
           </div>
 
           <button type="submit" className="login-btn" disabled={loading}>
