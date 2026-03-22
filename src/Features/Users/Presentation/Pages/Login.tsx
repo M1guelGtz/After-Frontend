@@ -1,6 +1,6 @@
 import fondo from "../../../../assets/after.jpg";
 import { useAuth } from "../ViewModels/UseAuth";
-import "./Login.css";
+import "./login.css";
 
 export default function Login() {
   const { handleSubmit, username, password, setPassword, setUsername, loading, error } = useAuth()
