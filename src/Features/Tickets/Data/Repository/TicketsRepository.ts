@@ -13,6 +13,12 @@ export class TicketsRepository {
     return apiRequest<TicketDTO>(`tickets/${encodeURIComponent(code)}`);
   }
 
+  getPublicTicketByToken(token: string) {
+    return apiRequest<TicketDTO>(`tickets/public/${encodeURIComponent(token)}`, {
+      auth: false,
+    });
+  }
+
   markTicketAsUsed(code: string) {
     return apiRequest<TicketDTO>(`tickets/${encodeURIComponent(code)}/use`, {
       method: "PATCH",

@@ -475,6 +475,16 @@
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
+.qr-ticket-public-route {
+  grid-column: 1 / -1;
+}
+
+.qr-ticket-public-link {
+  display: block;
+  overflow-wrap: anywhere;
+  text-decoration: underline;
+}
+
 .compact-ticket-card {
   align-items: center;
 }

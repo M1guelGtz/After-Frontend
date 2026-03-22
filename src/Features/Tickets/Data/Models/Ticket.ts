@@ -16,6 +16,7 @@ export interface TicketDTO {
   comision_rp?: number | null;
   estado: "ACTIVO" | "USADO";
   qr_payload?: string;
+  public_url?: string;
   fecha_venta?: string;
   fecha_uso?: string | null;
 }

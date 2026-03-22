@@ -28,6 +28,7 @@ function getQrContent(ticket: TicketDTO) {
 export default function TicketQrModal({ ticket, eventName, onClose }: TicketQrModalProps) {
   const [qrUrl, setQrUrl] = useState("");
   const [qrError, setQrError] = useState("");
+  const publicTicketUrl = ticket.public_url?.trim() ?? "";
 
   useEffect(() => {
     let cancelled = false;
@@ -116,6 +117,19 @@ export default function TicketQrModal({ ticket, eventName, onClose }: TicketQrMo
               <small>Fecha venta</small>
               <strong>{ticket.fecha_venta ? new Date(ticket.fecha_venta).toLocaleString("es-MX") : "-"}</strong>
             </div>
+            {publicTicketUrl ? (
+              <div className="qr-ticket-chip qr-ticket-public-route">
+                <small>Ruta pública</small>
+                <a
+                  className="qr-ticket-public-link"
+                  href={publicTicketUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {publicTicketUrl}
+                </a>
+              </div>
+            ) : null}
           </div>
         </div>
       </section>
