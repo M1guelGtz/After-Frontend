@@ -129,6 +129,7 @@ export default function RPDashboard() {
         <TicketQrModal
           ticket={previewTicket}
           eventName={selectedEvent?.nombre}
+          eventLocation={selectedEvent?.lugar ?? undefined}
           onClose={closeTicketModal}
         />
       ) : null}

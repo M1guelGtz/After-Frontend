@@ -2,6 +2,7 @@ import QRCode from "qrcode";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import "../../../Shared/Presentation/Components/dashboard-shell.css";
+import { eventsUseCase } from "../../../Events/Domain/EventsUseCase";
 import type { TicketDTO } from "../../Data/Models/Ticket";
 import { ticketsUseCase } from "../../Domain/TicketsUseCase";
 
@@ -28,6 +29,7 @@ export default function PublicTicketPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [qrUrl, setQrUrl] = useState("");
+  const [eventLocation, setEventLocation] = useState("");
 
   useEffect(() => {
     const loadTicket = async () => {
@@ -83,6 +85,34 @@ export default function PublicTicketPage() {
     };
 
     void generateQr();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [ticket]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const loadEventLocation = async () => {
+      if (!ticket) {
+        setEventLocation("");
+        return;
+      }
+
+      try {
+        const event = await eventsUseCase.getEventById(ticket.evento_id);
+        if (!cancelled) {
+          setEventLocation(event.lugar?.trim() ?? "");
+        }
+      } catch {
+        if (!cancelled) {
+          setEventLocation("");
+        }
+      }
+    };
+
+    void loadEventLocation();
 
     return () => {
       cancelled = true;
@@ -145,6 +175,10 @@ export default function PublicTicketPage() {
               <div className="qr-ticket-chip">
                 <small>Fecha venta</small>
                 <strong>{ticket.fecha_venta ? new Date(ticket.fecha_venta).toLocaleString("es-MX") : "-"}</strong>
+              </div>
+              <div className="qr-ticket-chip">
+                <small>Ubicación</small>
+                <strong>{eventLocation || "No disponible"}</strong>
               </div>
             </div>
           </div>
